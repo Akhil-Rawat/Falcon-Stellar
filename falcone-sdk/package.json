@@ -1,0 +1,35 @@
+{
+    "name": "@anshu007/falcone-sdk",
+    "version": "1.0.1",
+    "description": "Monetize your APIs with Stellar payments. Wrap any Express endpoint with pay-per-call protection.",
+    "main": "index.js",
+    "bin": {
+        "falcone": "./bin/cli.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "stellar",
+        "api",
+        "monetization",
+        "payment",
+        "xlm",
+        "blockchain",
+        "express",
+        "middleware"
+    ],
+    "author": "Falcone Labs",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.6.0"
+    },
+    "peerDependencies": {
+        "express": "^4.0.0 || ^5.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/falcone-labs/falcone-sdk"
+    },
+    "homepage": "https://falcone.dev"
+}

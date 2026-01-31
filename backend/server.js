@@ -1,0 +1,258 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const protect = require('./protect');
+const API = require('./models/API');
+const { seedDatabase } = require('./seed');
+
+const app = express();
+const PORT = 3001;
+
+// Enable CORS for frontend with exposed custom headers
+app.use(cors({
+    origin: true,
+    exposedHeaders: ['X-Payment-Amount', 'X-Payment-Asset', 'X-Payment-Receiver'],
+}));
+app.use(express.json());
+
+// ============================================
+// MONGODB CONNECTION
+// ============================================
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/falcone';
+
+mongoose.connect(MONGODB_URI)
+    .then(async () => {
+        console.log('✅ Connected to MongoDB');
+        // Seed database with dummy data on first run
+        await seedDatabase();
+    })
+    .catch(err => {
+        console.error('❌ MongoDB connection error:', err.message);
+        console.log('⚠️  Running with in-memory storage (data will be lost on restart)');
+    });
+
+// Generate unique ID
+function generateId() {
+    return 'api-' + Math.random().toString(36).substr(2, 9);
+}
+
+// ============================================
+// API REGISTRATION ENDPOINTS
+// ============================================
+
+// POST /api/register - Register a new API
+app.post('/api/register', async (req, res) => {
+    const { name, description, endpoint, price, asset, receiver, category, owner } = req.body;
+
+    // Validate required fields
+    if (!name || !endpoint || !price || !receiver) {
+        return res.status(400).json({
+            error: 'Missing required fields: name, endpoint, price, receiver'
+        });
+    }
+
+    try {
+        // Check if API with same endpoint already exists
+        const exists = await API.findOne({ endpoint });
+        if (exists) {
+            return res.status(400).json({ error: 'API with this endpoint already registered' });
+        }
+
+        const newAPI = new API({
+            id: generateId(),
+            name,
+            description: description || `${name} API`,
+            endpoint,
+            price: String(price),
+            asset: asset || 'XLM',
+            receiver,
+            category: category || 'General',
+            owner: owner || 'Anonymous',
+        });
+
+        await newAPI.save();
+        console.log(`✅ New API registered: ${name} (${endpoint})`);
+
+        res.json({
+            success: true,
+            message: 'API registered successfully!',
+            api: newAPI
+        });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ error: 'Failed to register API' });
+    }
+});
+
+// GET /api/list - List all registered APIs
+app.get('/api/list', async (req, res) => {
+    try {
+        const apis = await API.find({ isActive: true }).sort({ createdAt: -1 });
+        res.json({
+            apis,
+            total: apis.length
+        });
+    } catch (error) {
+        console.error('List error:', error);
+        res.status(500).json({ error: 'Failed to fetch APIs' });
+    }
+});
+
+// GET /api/:id - Get single API details
+app.get('/api/details/:id', async (req, res) => {
+    try {
+        const api = await API.findOne({ id: req.params.id });
+        if (!api) {
+            return res.status(404).json({ error: 'API not found' });
+        }
+        res.json({ api });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch API' });
+    }
+});
+
+// DELETE /api/:id - Delete an API
+app.delete('/api/:id', async (req, res) => {
+    try {
+        const result = await API.findOneAndDelete({ id: req.params.id });
+        if (!result) {
+            return res.status(404).json({ error: 'API not found' });
+        }
+        res.json({ success: true, message: 'API deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete API' });
+    }
+});
+
+// ============================================
+// PROTECTED DEMO APIS (Mock endpoints)
+// ============================================
+
+// Helper to create protected route configs
+function createProtection(amount, receiver) {
+    return {
+        price: { amount, asset: 'XLM' },
+        receiver,
+    };
+}
+
+// 1. Falcone Analyzer - 10 XLM
+app.get('/api/analyze', protect(createProtection('10', 'GDX72DVPIT234SINJVVEM7WL44R4HVZDT463EZRBQ2AMBYWI523TXJY4')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'falcone-analyze' }, { $inc: { totalCalls: 1, totalRevenue: 10 } });
+    } catch (err) { }
+    res.json({
+        result: 'Success! Text analysis complete.',
+        sentiment: 'positive',
+        keywords: ['AI', 'blockchain', 'stellar'],
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// 2. Image Recognition - 5 XLM
+app.get('/api/vision', protect(createProtection('5', 'GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'image-recognition' }, { $inc: { totalCalls: 1, totalRevenue: 5 } });
+    } catch (err) { }
+    res.json({
+        result: 'Image analyzed successfully!',
+        objects: ['person', 'laptop', 'coffee cup'],
+        confidence: 0.95,
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// 3. Weather Pro - 2 XLM
+app.get('/api/weather', protect(createProtection('2', 'GBCR5OVQ54S2EKHLBZMK6VYMTXZHXN3T74BCDXFGHXMKRBZ2BLH72SBC')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'weather-premium' }, { $inc: { totalCalls: 1, totalRevenue: 2 } });
+    } catch (err) { }
+    res.json({
+        result: 'Weather data retrieved!',
+        location: 'Mumbai, India',
+        temperature: '28°C',
+        conditions: 'Partly cloudy',
+        forecast: '15-day forecast available',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// 4. Crypto Prices - 3 XLM
+app.get('/api/crypto', protect(createProtection('3', 'GDI5K3EKIBB6VUMKPE4FPFGHZ32WV7A5NWGMVSWFCFNMRQKCHSZ4BDHB')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'crypto-prices' }, { $inc: { totalCalls: 1, totalRevenue: 3 } });
+    } catch (err) { }
+    res.json({
+        result: 'Crypto prices fetched!',
+        prices: {
+            BTC: '$95,420.50',
+            ETH: '$3,245.80',
+            XLM: '$0.42',
+        },
+        marketCap: '$3.2T',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// 5. Neural Translate - 1 XLM
+app.get('/api/translate', protect(createProtection('1', 'GCNVDZIHGX473FEI7IXCUAEXUJ4BGCKEMHF36VYP5EMS7PX2QBLAMTLA')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'translation-api' }, { $inc: { totalCalls: 1, totalRevenue: 1 } });
+    } catch (err) { }
+    res.json({
+        result: 'Translation complete!',
+        originalText: 'Hello, World!',
+        translatedText: 'नमस्ते, दुनिया!',
+        targetLanguage: 'Hindi',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// 6. Email Verification - 0.5 XLM
+app.get('/api/email-check', protect(createProtection('0.5', 'GAI3GJ2Q3B35AOZJ36C4ANE3HSS4NK7WI6DNO4ZSHRAX6NG7BMX6VJER')), async (req, res) => {
+    try {
+        await API.findOneAndUpdate({ id: 'email-validator' }, { $inc: { totalCalls: 1, totalRevenue: 0.5 } });
+    } catch (err) { }
+    res.json({
+        result: 'Email verified!',
+        email: 'user@example.com',
+        isValid: true,
+        isDisposable: false,
+        deliverability: 'high',
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// ============================================
+// STATS ENDPOINTS
+// ============================================
+
+// GET /api/stats - Get marketplace statistics
+app.get('/api/stats', async (req, res) => {
+    try {
+        const totalApis = await API.countDocuments({ isActive: true });
+        const stats = await API.aggregate([
+            { $match: { isActive: true } },
+            {
+                $group: {
+                    _id: null,
+                    totalCalls: { $sum: '$totalCalls' },
+                    totalRevenue: { $sum: '$totalRevenue' },
+                }
+            }
+        ]);
+
+        res.json({
+            totalApis,
+            totalCalls: stats[0]?.totalCalls || 0,
+            totalRevenue: stats[0]?.totalRevenue || 0,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch stats' });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Falcone SDK Server running on http://localhost:${PORT}`);
+});
