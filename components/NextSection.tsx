@@ -2,15 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const codeLines = [
-  'import { createChain } from "interchain-sdk";',
+  '$ npx @anshu007/falcon-api-sdk init',
+  'Need to install the following packages:',
+  '@anshu007/falcon-api-sdk@1.0.1',
+  'Ok to proceed? (y) y',
   '',
-  'const chain = createChain({',
-  '  name: "my-app-chain",',
-  '  consensus: "tendermint",',
-  '  modules: [auth, bank, staking],',
-  '});',
+  '🦅 Falcon API SDK Setup',
+  'Monetize your Express.js APIs with Stellar blockchain payments',
   '',
-  'chain.start();',
+  '? Which payment mode would you like to use? Pay-per-User',
+  '? Your Stellar wallet address (to receive payments):',
+  'GCXCAQEURH7OZ323SV65RFTXURU47IDOG4KBC72NXSBQVS3ACEMA7DFW',
+  '? API name: Open-Ai',
+  '? Price per API call (in XLM): 5',
+  '',
+  '✅ Configuration complete!',
 ];
 
 const NextSection: React.FC = () => {
