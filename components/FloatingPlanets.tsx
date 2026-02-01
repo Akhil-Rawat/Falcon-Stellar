@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 interface PlanetProps {
   size: number;
@@ -36,11 +36,11 @@ const Planet: React.FC<PlanetProps> = ({
       transition={{
         scale: { duration: 1, delay },
         opacity: { duration: 1, delay },
-        x: { type: 'spring', stiffness: 50, damping: 20 },
-        y: { type: 'spring', stiffness: 50, damping: 20 },
+        x: { type: "spring", stiffness: 50, damping: 20 },
+        y: { type: "spring", stiffness: 50, damping: 20 },
       }}
       style={{
-        position: 'absolute',
+        position: "absolute",
         top,
         left,
         width: size,
@@ -53,10 +53,10 @@ const Planet: React.FC<PlanetProps> = ({
         transition={{
           duration: 5 + Math.random() * 2,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
         }}
         className={`relative w-full h-full rounded-full overflow-hidden ${
-          blur ? 'blur-[2px]' : ''
+          blur ? "blur-[2px]" : ""
         }`}
         style={{
           background: color,
@@ -72,11 +72,7 @@ const Planet: React.FC<PlanetProps> = ({
         {/* ✅ IMAGE — CLEAR & ORIGINAL */}
         {icon && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <img
-              src={icon}
-              alt=""
-              className="w-1/2 h-1/2 object-contain"
-            />
+            <img src={icon} alt="" className="w-1/2 h-1/2 object-contain" />
           </div>
         )}
 
@@ -93,55 +89,55 @@ const FloatingPlanets: React.FC<{ mouseOffset: { x: number; y: number } }> = ({
   const planets = [
     {
       size: 120,
-      color: 'linear-gradient(135deg, #9b8fae 0%, #475569 100%)',
-      top: '15%',
-      left: '10%',
+      color: "linear-gradient(135deg, #9b8fae 0%, #475569 100%)",
+      top: "15%",
+      left: "10%",
       parallaxFactor: 1.2,
       delay: 0.1,
     },
     {
       size: 160,
-      color: 'linear-gradient(135deg, #64748b 0%, #334155 100%)',
-      top: '50%',
-      left: '5%',
+      color: "linear-gradient(135deg, #64748b 0%, #334155 100%)",
+      top: "50%",
+      left: "5%",
       parallaxFactor: 2.2,
       delay: 0.3,
-      icon: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=040',
+      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
     },
     {
       size: 60,
-      color: 'linear-gradient(135deg, #d3c7e7 0%, #64748b 100%)',
-      top: '65%',
-      left: '42%',
+      color: "linear-gradient(135deg, #d3c7e7 0%, #64748b 100%)",
+      top: "65%",
+      left: "42%",
       parallaxFactor: 1.5,
       delay: 0.5,
     },
     {
       size: 90,
-      color: 'linear-gradient(135deg, #cbd5f5 0%, #94a3b8 100%)',
-      top: '5%',
-      left: '88%',
+      color: "linear-gradient(135deg, #cbd5f5 0%, #94a3b8 100%)",
+      top: "5%",
+      left: "88%",
       parallaxFactor: 0.8,
       delay: 0.7,
       blur: true,
     },
     {
       size: 140,
-      color: 'linear-gradient(135deg, #475569 0%, #ddcff2 100%)',
-      top: '25%',
-      left: '78%',
+      color: "linear-gradient(135deg, #475569 0%, #ddcff2 100%)",
+      top: "25%",
+      left: "78%",
       parallaxFactor: 1.8,
       delay: 0.2,
-      icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040',
+      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
     },
     {
       size: 80,
-      color: 'linear-gradient(135deg, #94a3b8 0%, #64748b 100%)',
-      top: '75%',
-      left: '85%',
+      color: "linear-gradient(135deg, #94a3b8 0%, #64748b 100%)",
+      top: "75%",
+      left: "85%",
       parallaxFactor: 2.5,
       delay: 0.4,
-      icon: 'https://cryptologos.cc/logos/crypto-com-coin-cro-logo.png?v=040',
+      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
     },
   ];
 
@@ -155,3 +151,4 @@ const FloatingPlanets: React.FC<{ mouseOffset: { x: number; y: number } }> = ({
 };
 
 export default FloatingPlanets;
+
