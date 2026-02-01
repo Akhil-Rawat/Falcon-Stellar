@@ -2,8 +2,12 @@
 
 
 Our Escrow Wallet For Escrow SDK , Where User Fund this wallet and Use Our API
+
+---
 Escrow Public Key: GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
+---
 SDK(To wrap your API) : 
+---
 npx @anshu007/falcon-api-sdk register \
   --name "API Name" \
   --description "Description" \
@@ -11,6 +15,7 @@ npx @anshu007/falcon-api-sdk register \
   --price 80 \
   --wallet "GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ" \
   --mode escrow  # ya pay-per-user 
+  ---
 # Pay-Per-Request Infrastructure for APIs
 
 This project enables APIs and AI tools to be paid **per request**, instead of forcing users into subscriptions or accounts.
