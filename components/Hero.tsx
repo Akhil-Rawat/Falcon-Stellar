@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
         className="max-w-5xl"
       >
         <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-extrabold tracking-tight text-gray-900 mb-10 leading-[0.85] selection:bg-gray-300">
-          Pay-Per-API calls on<br />
+          Pay-per-request <br />
           <motion.span 
             animate={{ 
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
             }}
             className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-600 to-gray-400 bg-[length:200%_auto]"
           >
-            Stellar
+            infrastructure for APIs
           </motion.span>
         </h1>
         
@@ -33,8 +33,8 @@ const Hero: React.FC = () => {
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="text-lg md:text-xl text-black max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
         >
-          Reduce costs, scale effortlessly, and make your business come alive. 
-          Hundreds of companies use Cosmos SDK to build fast, secure blockchain applications.
+          Charge per call, not per month. Turn any API into a paid API with one line of code.
+          We handle payments, verification, and access control at the HTTP layer so you can focus on building your product.
         </motion.p>
 
         <motion.div
