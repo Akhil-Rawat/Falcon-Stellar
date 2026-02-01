@@ -1,22 +1,20 @@
-
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import NextSection from '../components/NextSection';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Hero from "../components/Hero";
+import NextSection from "../components/NextSection";
 
 const apis = [
   {
-    id: 'ai-summary',
-    name: 'AI Summary',
-    price: '0.0001 USDC / call',
-    description: 'Generate short summaries from long text.',
+    id: "ai-summary",
+    name: "AI Summary",
+    price: "0.0001 USDC / call",
+    description: "Generate short summaries from long text.",
   },
   {
-    id: 'text-analyzer',
-    name: 'Text Analyzer',
-    price: '0.00005 USDC / call',
-    description: 'Analyze sentiment and keywords from text.',
+    id: "text-analyzer",
+    name: "Text Analyzer",
+    price: "0.00005 USDC / call",
+    description: "Analyze sentiment and keywords from text.",
   },
 ];
 
@@ -25,7 +23,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
       <Hero />
       <NextSection />
 
@@ -45,12 +42,10 @@ const Home: React.FC = () => {
                 {api.name}
               </h3>
               <p className="text-gray-600 mt-2">{api.description}</p>
-              <p className="mt-4 font-medium text-gray-800">
-                {api.price}
-              </p>
+              <p className="mt-4 font-medium text-gray-800">{api.price}</p>
 
               <button
-                onClick={() => navigate('/playground')}
+                onClick={() => navigate("/playground")}
                 className="mt-6 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition"
               >
                 Try API

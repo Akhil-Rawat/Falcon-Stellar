@@ -1,0 +1,25 @@
+{
+    "name": "my-paid-api",
+    "version": "1.0.0",
+    "description": "Example API monetized with Falcone SDK - Pay per call with Stellar",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node server.js",
+        "register": "node register-api.js"
+    },
+    "keywords": [
+        "api",
+        "stellar",
+        "paid",
+        "monetization"
+    ],
+    "author": "Developer Name",
+    "license": "MIT",
+    "dependencies": {
+        "@anshu007/falcone-sdk": "^1.0.1",
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1"
+    }
+}

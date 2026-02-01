@@ -1,32 +1,43 @@
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import { isConnected, requestAccess, signTransaction } from '@stellar/freighter-api';
-import { Horizon, TransactionBuilder, Asset, Networks } from 'stellar-sdk';
+import React, { useState } from "react";
+import {
+  isConnected,
+  requestAccess,
+  signTransaction,
+} from "@stellar/freighter-api";
+import { Horizon, TransactionBuilder, Asset, Networks } from "stellar-sdk";
 
 const Playground: React.FC = () => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [showPayment, setShowPayment] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [apiResult, setApiResult] = useState('');
+  const [apiResult, setApiResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState<{ amount: string, destination: string, asset: string } | null>(null);
+  const [paymentDetails, setPaymentDetails] = useState<{
+    amount: string;
+    destination: string;
+    asset: string;
+  } | null>(null);
 
   const runApi = async () => {
     setIsLoading(true);
     try {
       // 1. First call to API (expecting 402)
-      const res = await fetch('http://localhost:3001/api/analyze', {
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("http://localhost:3001/api/analyze", {
+        headers: { "Content-Type": "application/json" },
       });
 
       if (res.status === 402) {
         // Payment Required
-        const amount = res.headers.get('x-payment-amount');
-        const asset = res.headers.get('x-payment-asset');
-        const receiver = res.headers.get('x-payment-receiver');
+        const amount = res.headers.get("x-payment-amount");
+        const asset = res.headers.get("x-payment-asset");
+        const receiver = res.headers.get("x-payment-receiver");
 
         if (amount && receiver) {
-          setPaymentDetails({ amount, destination: receiver, asset: asset || 'XLM' });
+          setPaymentDetails({
+            amount,
+            destination: receiver,
+            asset: asset || "XLM",
+          });
           setShowPayment(true);
         }
       } else if (res.ok) {
@@ -53,7 +64,7 @@ const Playground: React.FC = () => {
       await requestAccess();
 
       // Build Transaction
-      const server = new Horizon.Server('https://horizon-testnet.stellar.org');
+      const server = new Horizon.Server("https://horizon-testnet.stellar.org");
       const { address, error } = await requestAccess();
       if (error) {
         throw new Error(error);
@@ -61,7 +72,7 @@ const Playground: React.FC = () => {
       const account = await server.loadAccount(address);
 
       const tx = new TransactionBuilder(account, {
-        fee: '100',
+        fee: "100",
         networkPassphrase: Networks.TESTNET,
       })
         .addOperation(
@@ -69,33 +80,36 @@ const Playground: React.FC = () => {
             destination: paymentDetails.destination,
             asset: Asset.native(),
             amount: paymentDetails.amount,
-          } as any // quick type fix for demo
+          } as any, // quick type fix for demo
         )
         .setTimeout(30)
         .build();
 
       // Sign with Freighter
-      const { signedTxXdr } = await signTransaction(tx.toXDR(), { networkPassphrase: Networks.TESTNET });
+      const { signedTxXdr } = await signTransaction(tx.toXDR(), {
+        networkPassphrase: Networks.TESTNET,
+      });
 
       // Submit to Network
-      const txResult = await server.submitTransaction(TransactionBuilder.fromXDR(signedTxXdr, Networks.TESTNET));
+      const txResult = await server.submitTransaction(
+        TransactionBuilder.fromXDR(signedTxXdr, Networks.TESTNET),
+      );
       console.log("Transaction Submitted:", txResult.hash);
 
       // 2. Retry API with Payment Proof
       setShowPayment(false);
       setIsLoading(true);
 
-      const res = await fetch('http://localhost:3001/api/analyze', {
+      const res = await fetch("http://localhost:3001/api/analyze", {
         headers: {
-          'x-payment-tx': txResult.hash,
-          'Content-Type': 'application/json'
+          "x-payment-tx": txResult.hash,
+          "Content-Type": "application/json",
         },
       });
 
       const data = await res.json();
       setApiResult(JSON.stringify(data, null, 2));
       setShowResult(true);
-
     } catch (err) {
       console.error("Payment Failed", err);
       alert("Payment Failed: " + err);
@@ -105,9 +119,7 @@ const Playground: React.FC = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <section className="min-h-screen px-6 py-24 max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold text-black mb-6">
           Falcone SDK Playground
@@ -141,7 +153,8 @@ const Playground: React.FC = () => {
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-6 w-80 text-center">
               <h3 className="text-lg font-semibold text-black mb-4">
-                This request costs {paymentDetails.amount} {paymentDetails.asset}
+                This request costs {paymentDetails.amount}{" "}
+                {paymentDetails.asset}
               </h3>
 
               <div className="flex gap-4 justify-center">
@@ -165,9 +178,7 @@ const Playground: React.FC = () => {
         {/* API Result */}
         {showResult && (
           <div className="mt-10 bg-gray-100 rounded-lg p-4 font-mono text-sm text-black overflow-auto">
-            <pre>
-              {apiResult}
-            </pre>
+            <pre>{apiResult}</pre>
           </div>
         )}
       </section>

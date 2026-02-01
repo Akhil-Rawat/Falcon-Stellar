@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Navbar from './components/Navbar';
-import BackgroundEffects from './components/BackgroundEffects';
-import FloatingPlanets from './components/FloatingPlanets';
+import Navbar from "./components/Navbar";
+import BackgroundEffects from "./components/BackgroundEffects";
+import FloatingPlanets from "./components/FloatingPlanets";
 
-import Home from './pages/Home';
-import Playground from './pages/Playground';
-import Dashboard from './pages/Dashboard';
-import Marketplace from './pages/Marketplace';
+import Home from "./pages/Home";
+import Playground from "./pages/Playground";
+import Dashboard from "./pages/Dashboard";
+import Marketplace from "./pages/Marketplace";
+import PrepaidMarketplace from "./pages/PrepaidMarketplace";
+import SDKDocs from "./pages/SDKDocs";
 
 const App: React.FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -21,8 +23,8 @@ const App: React.FC = () => {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -42,6 +44,8 @@ const App: React.FC = () => {
           <Route path="/playground" element={<Playground />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/prepaid" element={<PrepaidMarketplace />} />
+          <Route path="/sdk-docs" element={<SDKDocs />} />
         </Routes>
       </div>
 

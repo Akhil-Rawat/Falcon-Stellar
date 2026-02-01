@@ -1,0 +1,14 @@
+{
+    "name": "falcone-demo-api",
+    "version": "1.0.0",
+    "description": "Demo API server using Falcone SDK",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "@anshu007/falcone-sdk": "file:../falcone-sdk",
+        "cors": "^2.8.5",
+        "express": "^4.18.2"
+    }
+}
