@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
         className="max-w-5xl"
       >
         <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-extrabold tracking-tight text-gray-900 mb-10 leading-[0.85] selection:bg-gray-300">
-          Pay-per-request <br />
+          Pay-Per-Call <br />
           <motion.span 
             animate={{ 
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
             }}
             className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-600 to-gray-400 bg-[length:200%_auto]"
           >
-            infrastructure for APIs
+            SDKs for APIs
           </motion.span>
         </h1>
         
