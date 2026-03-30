@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import BackgroundEffects from './BackgroundEffects';
+import FloatingPlanets from './FloatingPlanets';
 
 const Hero: React.FC = () => {
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseOffset({
+        x: (e.clientX - window.innerWidth / 2) * 0.01,
+        y: (e.clientY - window.innerHeight / 2) * 0.01,
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center pt-20">
+      <BackgroundEffects />
+      <FloatingPlanets mouseOffset={mouseOffset} />
       <motion.div
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-5xl"
+        className="max-w-5xl relative z-10"
       >
         <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-extrabold tracking-tight text-gray-900 mb-10 leading-[0.85] selection:bg-gray-300">
           Pay-Per-Call <br />

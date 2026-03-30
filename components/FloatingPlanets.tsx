@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import stellarImage from "../assets/stellar.png";
 
 interface PlanetProps {
   size: number;
@@ -102,7 +103,7 @@ const FloatingPlanets: React.FC<{ mouseOffset: { x: number; y: number } }> = ({
       left: "5%",
       parallaxFactor: 2.2,
       delay: 0.3,
-      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
+      icon: stellarImage,
     },
     {
       size: 60,
@@ -128,7 +129,7 @@ const FloatingPlanets: React.FC<{ mouseOffset: { x: number; y: number } }> = ({
       left: "78%",
       parallaxFactor: 1.8,
       delay: 0.2,
-      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
+      icon: stellarImage,
     },
     {
       size: 80,
@@ -137,7 +138,7 @@ const FloatingPlanets: React.FC<{ mouseOffset: { x: number; y: number } }> = ({
       left: "85%",
       parallaxFactor: 2.5,
       delay: 0.4,
-      icon: "https://cryptologos.cc/logos/stellar-xlm-logo.png?v=040",
+      icon: stellarImage,
     },
   ];
 
