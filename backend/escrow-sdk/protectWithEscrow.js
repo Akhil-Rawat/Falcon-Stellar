@@ -19,7 +19,7 @@ function protectWithEscrow({
   getUserId,
 }) {
   // Return standard Express middleware
-  return function (req, res, next) {
+  return async function (req, res, next) {
     const userId = getUserId(req);
     if (!userId) {
       // If userId cannot be determined, treat as unpaid
@@ -29,7 +29,7 @@ function protectWithEscrow({
         remainingBalance: 0,
       });
     }
-    const balance = escrowInstance.getUserBalance(userId);
+    const balance = await escrowInstance.getUserBalance(userId);
     if (balance < pricePerCall) {
       // Not enough prepaid credits: HTTP 402 Payment Required
       return res.status(402).json({
@@ -40,7 +40,7 @@ function protectWithEscrow({
     }
     // Deduct credits for this call
     try {
-      escrowInstance.consumeCredit({
+      await escrowInstance.consumeCredit({
         userId,
         apiId,
         apiOwnerId,

@@ -39,6 +39,9 @@ interface PrepaidAPI {
   category: string;
 }
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+
 const PrepaidMarketplace: React.FC = () => {
   const [userWallet, setUserWallet] = useState<string>("");
   const [balance, setBalance] = useState<number>(0);
@@ -57,7 +60,7 @@ const PrepaidMarketplace: React.FC = () => {
       id: "falcone-analyze",
       name: "Falcone Analyzer",
       description: "Advanced text analysis with AI-powered sentiment detection",
-      endpoint: "http://localhost:3001/api/prepaid/analyze",
+      endpoint: `${API_BASE_URL}/api/prepaid/analyze`,
       price: 10,
       category: "AI",
     },
@@ -66,7 +69,7 @@ const PrepaidMarketplace: React.FC = () => {
       name: "Image Recognition",
       description:
         "Computer vision API for object detection and classification",
-      endpoint: "http://localhost:3001/api/prepaid/vision",
+      endpoint: `${API_BASE_URL}/api/prepaid/vision`,
       price: 5,
       category: "AI",
     },
@@ -74,7 +77,7 @@ const PrepaidMarketplace: React.FC = () => {
       id: "weather-premium",
       name: "Weather Pro",
       description: "Real-time weather data with 15-day forecasts",
-      endpoint: "http://localhost:3001/api/prepaid/weather",
+      endpoint: `${API_BASE_URL}/api/prepaid/weather`,
       price: 2,
       category: "Data",
     },
@@ -82,7 +85,7 @@ const PrepaidMarketplace: React.FC = () => {
       id: "crypto-prices",
       name: "Crypto Prices",
       description: "Live cryptocurrency prices and market data",
-      endpoint: "http://localhost:3001/api/prepaid/crypto",
+      endpoint: `${API_BASE_URL}/api/prepaid/crypto`,
       price: 3,
       category: "Finance",
     },
@@ -90,7 +93,7 @@ const PrepaidMarketplace: React.FC = () => {
       id: "translation-api",
       name: "Neural Translate",
       description: "Multi-language translation powered by neural networks",
-      endpoint: "http://localhost:3001/api/prepaid/translate",
+      endpoint: `${API_BASE_URL}/api/prepaid/translate`,
       price: 1,
       category: "AI",
     },
@@ -98,7 +101,7 @@ const PrepaidMarketplace: React.FC = () => {
       id: "email-validator",
       name: "Email Verification",
       description: "Validate email addresses and check deliverability",
-      endpoint: "http://localhost:3001/api/prepaid/email-check",
+      endpoint: `${API_BASE_URL}/api/prepaid/email-check`,
       price: 0.5,
       category: "Utility",
     },
@@ -128,7 +131,7 @@ const PrepaidMarketplace: React.FC = () => {
 
   const fetchEscrowInfo = async () => {
     try {
-      const response = await fetch("http://localhost:3001/escrow/info");
+      const response = await fetch(`${API_BASE_URL}/escrow/info`);
       const data = await response.json();
       if (data.success) {
         setEscrowWallet(data.escrowPublicKey);
@@ -142,7 +145,7 @@ const PrepaidMarketplace: React.FC = () => {
     setIsLoadingBalance(true);
     try {
       const response = await fetch(
-        `http://localhost:3001/escrow/balance/${userId}`,
+        `${API_BASE_URL}/escrow/balance/${userId}`,
       );
       const data = await response.json();
       if (data.success) {
@@ -210,7 +213,7 @@ const PrepaidMarketplace: React.FC = () => {
       console.log("Transaction Submitted:", result.hash);
 
       // Record prepayment on backend
-      const response = await fetch("http://localhost:3001/escrow/fund", {
+      const response = await fetch(`${API_BASE_URL}/escrow/fund`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

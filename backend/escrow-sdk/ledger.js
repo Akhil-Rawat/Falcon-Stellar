@@ -1,67 +1,90 @@
-// In-memory ledger for prepaid credits and usage tracking
-// This can be swapped for a persistent store if needed
+const EscrowBalance = require("../models/EscrowBalance");
+const PendingPayout = require("../models/PendingPayout");
+const UsedTransaction = require("../models/UsedTransaction");
 
 class Ledger {
-  constructor() {
-    // userId => { balance: number, txHashes: Set }
-    this.userBalances = new Map();
-    // apiOwnerId => amount owed (aggregated usage)
-    this.pendingPayouts = new Map();
-    // Used txHashes for replay protection
-    this.usedTxHashes = new Set();
-  }
-
   // Record a prepayment for a user
-  recordPrepayment(userId, txHash, amount) {
-    if (!this.userBalances.has(userId)) {
-      this.userBalances.set(userId, { balance: 0, txHashes: new Set() });
+  async recordPrepayment(userId, txHash, amount) {
+    try {
+      await UsedTransaction.create({ userId, txHash, amount });
+    } catch (error) {
+      if (error && error.code === 11000) {
+        throw new Error("Transaction hash already used");
+      }
+      throw error;
     }
-    const user = this.userBalances.get(userId);
-    user.balance += amount;
-    user.txHashes.add(txHash);
-    this.usedTxHashes.add(txHash);
-    return user.balance;
+
+    const updatedBalance = await EscrowBalance.findOneAndUpdate(
+      { userId },
+      {
+        $inc: { balance: amount },
+        $addToSet: { txHashes: txHash },
+      },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true,
+      },
+    );
+
+    return updatedBalance.balance;
   }
 
   // Deduct credits for API usage
-  consumeCredit(userId, apiOwnerId, amount) {
-    const user = this.userBalances.get(userId);
-    if (!user || user.balance < amount) {
+  async consumeCredit(userId, apiOwnerId, amount) {
+    const updatedBalance = await EscrowBalance.findOneAndUpdate(
+      { userId, balance: { $gte: amount } },
+      { $inc: { balance: -amount } },
+      { new: true },
+    );
+
+    if (!updatedBalance) {
       throw new Error("Insufficient balance");
     }
-    user.balance -= amount;
+
     // Track usage owed to apiOwnerId
-    this.pendingPayouts.set(
-      apiOwnerId,
-      (this.pendingPayouts.get(apiOwnerId) || 0) + amount,
+    await PendingPayout.findOneAndUpdate(
+      { apiOwnerId },
+      { $inc: { amount } },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true,
+      },
     );
+
+    return updatedBalance.balance;
   }
 
   // Get user balance
-  getUserBalance(userId) {
-    const user = this.userBalances.get(userId);
+  async getUserBalance(userId) {
+    const user = await EscrowBalance.findOne({ userId }).select("balance");
     return user ? user.balance : 0;
   }
 
   // Get pending payouts per API owner
-  getPendingPayouts() {
-    const payouts = [];
-    for (const [apiOwnerId, amount] of this.pendingPayouts.entries()) {
-      payouts.push({ apiOwnerId, amount });
+  async getPendingPayouts() {
+    return PendingPayout.find({ amount: { $gt: 0 } })
+      .select("apiOwnerId amount -_id")
+      .lean();
+  }
+
+  // Settle batch payouts and reset ledger
+  async settleBatch() {
+    const payouts = await this.getPendingPayouts();
+    if (payouts.length > 0) {
+      await PendingPayout.updateMany(
+        { apiOwnerId: { $in: payouts.map((p) => p.apiOwnerId) } },
+        { $set: { amount: 0 } },
+      );
     }
     return payouts;
   }
 
-  // Settle batch payouts and reset ledger
-  settleBatch() {
-    const payouts = this.getPendingPayouts();
-    this.pendingPayouts.clear();
-    return payouts;
-  }
-
   // Check if txHash has already been used
-  isTxUsed(txHash) {
-    return this.usedTxHashes.has(txHash);
+  async isTxUsed(txHash) {
+    const tx = await UsedTransaction.findOne({ txHash }).select("_id");
+    return Boolean(tx);
   }
 }
 

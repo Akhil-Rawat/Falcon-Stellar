@@ -36,6 +36,9 @@ interface PaymentDetails {
   endpoint: string;
 }
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+
 const Marketplace: React.FC = () => {
   const [apis, setApis] = useState<API[]>([]);
   const [isLoadingApis, setIsLoadingApis] = useState(true);
@@ -54,7 +57,7 @@ const Marketplace: React.FC = () => {
   useEffect(() => {
     const fetchApis = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/list");
+        const response = await fetch(`${API_BASE_URL}/api/list`);
         const data = await response.json();
         setApis(data.apis || []);
       } catch (error) {

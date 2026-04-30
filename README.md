@@ -96,3 +96,41 @@ HTTP/1.1 402 Payment Required
 X-Payment-Amount: 0.5
 X-Payment-Asset: XLM
 X-Payment-Reason: Insufficient balance
+```
+
+## MongoDB Atlas Checklist (IP Allowlist)
+
+If MongoDB works on one network but fails on another, your Atlas network access rules are usually the reason.
+
+1. Open Atlas -> Security -> Network Access.
+2. Add your current public IP and save.
+3. For development across changing networks, use 0.0.0.0/0 temporarily.
+4. In production, restrict this to your backend host egress IPs.
+5. In Atlas -> Database -> Connect, verify your URI includes a database name.
+
+Backend env in backend/.env:
+
+```env
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/falcone?retryWrites=true&w=majority
+ESCROW_PUBLIC_KEY=GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
+```
+
+Frontend env in .env:
+
+```env
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+## Deploy For Public Access
+
+Vercel should host the frontend. Host the Express backend separately (Render, Railway, Fly.io, or a VPS), then point the frontend to it.
+
+1. Deploy backend (directory: backend) and set backend env vars:
+   1. MONGODB_URI
+   2. ESCROW_PUBLIC_KEY
+2. Confirm backend health by opening /api/list on the deployed URL.
+3. Deploy frontend on Vercel from repo root.
+4. Add Vercel env var VITE_API_BASE_URL=https://<your-backend-domain>.
+5. Redeploy frontend.
+
+After deploy, the Marketplace and Prepaid pages read data from the deployed backend, which persists to Atlas.

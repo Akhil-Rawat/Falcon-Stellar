@@ -52,15 +52,28 @@ mongoose
   })
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err.message);
-    console.log(
-      "⚠️  Running with in-memory storage (data will be lost on restart)",
-    );
+    console.log("⚠️  Escrow and marketplace persistence require MongoDB");
   });
 
 // Generate unique ID
 function generateId() {
   return "api-" + Math.random().toString(36).substr(2, 9);
 }
+
+// ============================================
+// HEALTH & STATUS ENDPOINTS
+// ============================================
+
+// GET /health - Health check (for deployment monitoring)
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    mongodb: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    version: "1.0.0",
+  });
+});
 
 // ============================================
 // API REGISTRATION ENDPOINTS
@@ -403,10 +416,10 @@ app.post("/escrow/fund", async (req, res) => {
 });
 
 // GET /escrow/balance/:userId - Get user's prepaid balance
-app.get("/escrow/balance/:userId", (req, res) => {
+app.get("/escrow/balance/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       success: true,
@@ -419,9 +432,9 @@ app.get("/escrow/balance/:userId", (req, res) => {
 });
 
 // GET /escrow/payouts - Get pending payouts for API owners
-app.get("/escrow/payouts", (req, res) => {
+app.get("/escrow/payouts", async (req, res) => {
   try {
-    const payouts = escrow.getPendingPayouts();
+    const payouts = await escrow.getPendingPayouts();
     res.json({
       success: true,
       payouts,
@@ -432,7 +445,7 @@ app.get("/escrow/payouts", (req, res) => {
 });
 
 // POST /escrow/consume - Consume credits (used by SDK)
-app.post("/escrow/consume", (req, res) => {
+app.post("/escrow/consume", async (req, res) => {
   try {
     const { userId, apiId, apiOwnerId, amount } = req.body;
 
@@ -442,14 +455,14 @@ app.post("/escrow/consume", (req, res) => {
       });
     }
 
-    escrow.consumeCredit({
+    await escrow.consumeCredit({
       userId,
       apiId,
       apiOwnerId,
       amount: parseFloat(amount),
     });
 
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       success: true,
@@ -465,9 +478,9 @@ app.post("/escrow/consume", (req, res) => {
 });
 
 // POST /escrow/settle - Settle batch payouts
-app.post("/escrow/settle", (req, res) => {
+app.post("/escrow/settle", async (req, res) => {
   try {
-    const settlements = escrow.settleBatch();
+    const settlements = await escrow.settleBatch();
     res.json({
       success: true,
       message: "Batch settlement prepared",
@@ -511,7 +524,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Success! Text analysis complete (Prepaid).",
@@ -542,7 +555,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Image analyzed successfully! (Prepaid)",
@@ -573,7 +586,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Weather data retrieved! (Prepaid)",
@@ -606,7 +619,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Crypto prices fetched! (Prepaid)",
@@ -641,7 +654,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Translation complete! (Prepaid)",
@@ -673,7 +686,7 @@ app.get(
     } catch (err) {}
 
     const userId = getUserId(req);
-    const balance = escrow.getUserBalance(userId);
+    const balance = await escrow.getUserBalance(userId);
 
     res.json({
       result: "Email verified! (Prepaid)",
@@ -689,4 +702,5 @@ app.get(
 
 app.listen(PORT, () => {
   console.log(`🚀 Falcone SDK Server running on http://localhost:${PORT}`);
+  console.log(`📊 Health check available at http://localhost:${PORT}/health`);
 });

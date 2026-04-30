@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: falcon-backend
+    runtime: node
+    plan: free
+    startCommand: cd backend && npm install && npm start
+    envVars:
+      - key: MONGODB_URI
+        scope: run
+        value: ${MONGODB_URI}
+      - key: ESCROW_PUBLIC_KEY
+        value: GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /health
+    healthCheckInterval: 30
+
+  - type: static
+    name: falcon-frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        scope: build
+        value: https://falcon-backend.onrender.com

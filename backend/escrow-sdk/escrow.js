@@ -28,7 +28,7 @@ function initEscrow({ escrowPublicKey, asset }) {
      */
     async recordPrepayment({ userId, txHash, amount }) {
       // Prevent replay: check if txHash already used
-      if (ledger.isTxUsed(txHash)) {
+      if (await ledger.isTxUsed(txHash)) {
         throw new Error("Transaction hash already used");
       }
       // Verify payment on Stellar
@@ -48,7 +48,7 @@ function initEscrow({ escrowPublicKey, asset }) {
         throw new Error("Payment amount less than expected");
       }
       // Credit user in ledger
-      return ledger.recordPrepayment(userId, txHash, amount);
+      return await ledger.recordPrepayment(userId, txHash, amount);
     },
 
     /**
@@ -59,9 +59,9 @@ function initEscrow({ escrowPublicKey, asset }) {
      * @param {string} params.apiOwnerId
      * @param {number} params.amount
      */
-    consumeCredit({ userId, apiId, apiOwnerId, amount }) {
+    async consumeCredit({ userId, apiId, apiOwnerId, amount }) {
       // No blockchain interaction here
-      ledger.consumeCredit(userId, apiOwnerId, amount);
+      return await ledger.consumeCredit(userId, apiOwnerId, amount);
     },
 
     /**
@@ -69,24 +69,24 @@ function initEscrow({ escrowPublicKey, asset }) {
      * @param {string} userId
      * @returns {number}
      */
-    getUserBalance(userId) {
-      return ledger.getUserBalance(userId);
+    async getUserBalance(userId) {
+      return await ledger.getUserBalance(userId);
     },
 
     /**
      * Get aggregated unpaid usage per apiOwnerId
      * @returns {Array<{apiOwnerId: string, amount: number}>}
      */
-    getPendingPayouts() {
-      return ledger.getPendingPayouts();
+    async getPendingPayouts() {
+      return await ledger.getPendingPayouts();
     },
 
     /**
      * Prepare batch settlement instructions for API owners
      * @returns {Array<{apiOwnerId: string, amount: number, payoutInstruction: object}>}
      */
-    settleBatch() {
-      const payouts = ledger.settleBatch();
+    async settleBatch() {
+      const payouts = await ledger.settleBatch();
       // Prepare payout instructions (do NOT sign or send tx)
       return payouts.map(({ apiOwnerId, amount }) => ({
         apiOwnerId,
