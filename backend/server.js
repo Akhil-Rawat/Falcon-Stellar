@@ -11,6 +11,9 @@ const { protectWithEscrow } = require("./escrow-sdk/protectWithEscrow");
 const app = express();
 const PORT = 3001;
 
+const DEMO_RECEIVER =
+  "GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG";
+
 // ============================================
 // ESCROW CONFIGURATION
 // ============================================
@@ -70,7 +73,8 @@ app.get("/health", (req, res) => {
     status: "ok",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    mongodb: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongodb:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
     version: "1.0.0",
   });
 });
@@ -192,7 +196,7 @@ app.get(
   protect(
     createProtection(
       "10",
-      "GDX72DVPIT234SINJVVEM7WL44R4HVZDT463EZRBQ2AMBYWI523TXJY4",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -217,7 +221,7 @@ app.get(
   protect(
     createProtection(
       "5",
-      "GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -242,7 +246,7 @@ app.get(
   protect(
     createProtection(
       "2",
-      "GBCR5OVQ54S2EKHLBZMK6VYMTXZHXN3T74BCDXFGHXMKRBZ2BLH72SBC",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -269,7 +273,7 @@ app.get(
   protect(
     createProtection(
       "3",
-      "GDI5K3EKIBB6VUMKPE4FPFGHZ32WV7A5NWGMVSWFCFNMRQKCHSZ4BDHB",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -298,7 +302,7 @@ app.get(
   protect(
     createProtection(
       "1",
-      "GCNVDZIHGX473FEI7IXCUAEXUJ4BGCKEMHF36VYP5EMS7PX2QBLAMTLA",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -324,7 +328,7 @@ app.get(
   protect(
     createProtection(
       "0.5",
-      "GAI3GJ2Q3B35AOZJ36C4ANE3HSS4NK7WI6DNO4ZSHRAX6NG7BMX6VJER",
+      DEMO_RECEIVER,
     ),
   ),
   async (req, res) => {
@@ -511,7 +515,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "falcone-analyze",
-    apiOwnerId: "GDX72DVPIT234SINJVVEM7WL44R4HVZDT463EZRBQ2AMBYWI523TXJY4",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 10,
     getUserId,
   }),
@@ -542,7 +546,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "image-recognition",
-    apiOwnerId: "GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 5,
     getUserId,
   }),
@@ -573,7 +577,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "weather-premium",
-    apiOwnerId: "GBCR5OVQ54S2EKHLBZMK6VYMTXZHXN3T74BCDXFGHXMKRBZ2BLH72SBC",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 2,
     getUserId,
   }),
@@ -606,7 +610,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "crypto-prices",
-    apiOwnerId: "GDI5K3EKIBB6VUMKPE4FPFGHZ32WV7A5NWGMVSWFCFNMRQKCHSZ4BDHB",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 3,
     getUserId,
   }),
@@ -641,7 +645,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "translation-api",
-    apiOwnerId: "GCNVDZIHGX473FEI7IXCUAEXUJ4BGCKEMHF36VYP5EMS7PX2QBLAMTLA",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 1,
     getUserId,
   }),
@@ -673,7 +677,7 @@ app.get(
   protectWithEscrow({
     escrowInstance: escrow,
     apiId: "email-validator",
-    apiOwnerId: "GAI3GJ2Q3B35AOZJ36C4ANE3HSS4NK7WI6DNO4ZSHRAX6NG7BMX6VJER",
+    apiOwnerId: DEMO_RECEIVER,
     pricePerCall: 0.5,
     getUserId,
   }),

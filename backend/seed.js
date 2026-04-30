@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const API = require('./models/API');
 
+const DEMO_RECEIVER = 'GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG';
+
 // Dummy APIs data - all pointing to local mock endpoints
 const dummyAPIs = [
     {
@@ -10,7 +12,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/analyze',
         price: '10',
         asset: 'XLM',
-        receiver: 'GDX72DVPIT234SINJVVEM7WL44R4HVZDT463EZRBQ2AMBYWI523TXJY4',
+        receiver: DEMO_RECEIVER,
         category: 'AI & ML',
         owner: 'Falcone Labs',
     },
@@ -21,7 +23,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/vision',
         price: '5',
         asset: 'XLM',
-        receiver: 'GCKFBEIYV2U22IO2BJ4KVJOIP7XPWQGQFKKWXR6DOSJBV7STMAQSMTGG',
+        receiver: DEMO_RECEIVER,
         category: 'AI & ML',
         owner: 'VisionAI Labs',
     },
@@ -32,7 +34,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/weather',
         price: '2',
         asset: 'XLM',
-        receiver: 'GBCR5OVQ54S2EKHLBZMK6VYMTXZHXN3T74BCDXFGHXMKRBZ2BLH72SBC',
+        receiver: DEMO_RECEIVER,
         category: 'Data',
         owner: 'WeatherStack',
     },
@@ -43,7 +45,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/crypto',
         price: '3',
         asset: 'XLM',
-        receiver: 'GDI5K3EKIBB6VUMKPE4FPFGHZ32WV7A5NWGMVSWFCFNMRQKCHSZ4BDHB',
+        receiver: DEMO_RECEIVER,
         category: 'Finance',
         owner: 'CryptoData Inc',
     },
@@ -54,7 +56,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/translate',
         price: '1',
         asset: 'XLM',
-        receiver: 'GCNVDZIHGX473FEI7IXCUAEXUJ4BGCKEMHF36VYP5EMS7PX2QBLAMTLA',
+        receiver: DEMO_RECEIVER,
         category: 'AI & ML',
         owner: 'LinguaTech',
     },
@@ -65,7 +67,7 @@ const dummyAPIs = [
         endpoint: 'http://localhost:3001/api/email-check',
         price: '0.5',
         asset: 'XLM',
-        receiver: 'GAI3GJ2Q3B35AOZJ36C4ANE3HSS4NK7WI6DNO4ZSHRAX6NG7BMX6VJER',
+        receiver: DEMO_RECEIVER,
         category: 'Utilities',
         owner: 'MailGuard',
     },

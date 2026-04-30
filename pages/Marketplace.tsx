@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   isConnected,
@@ -51,7 +51,9 @@ const Marketplace: React.FC = () => {
   const [isPaying, setIsPaying] = useState(false);
   const [apiResult, setApiResult] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"pay" | "hash">("pay");
+  const resultRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch APIs from backend on mount
   useEffect(() => {
@@ -68,6 +70,12 @@ const Marketplace: React.FC = () => {
     };
     fetchApis();
   }, []);
+
+  useEffect(() => {
+    if (showResult && apiResult && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showResult, apiResult]);
 
   // Step 1: Try API - Expecting 402
   const tryApi = async (api: API) => {
@@ -161,14 +169,28 @@ const Marketplace: React.FC = () => {
 
   // Step 2b: Manual tx hash submission
   const handleSubmitTxHash = async () => {
-    if (!txHashInput.trim() || !paymentDetails) return;
-    await verifyPayment(txHashInput.trim());
+    if (!txHashInput.trim() || !paymentDetails) {
+      setFormError("Please enter a transaction hash before submitting.");
+      return;
+    }
+
+    // basic txHash validation (hex-ish) - short hashes allowed for testnet
+    const tx = txHashInput.trim();
+    const isHex = /^[0-9a-fA-F]+$/.test(tx);
+    if (tx.length < 6 || !isHex) {
+      setFormError("Invalid transaction hash format.");
+      return;
+    }
+
+    setFormError(null);
+    await verifyPayment(tx);
   };
 
   // Step 3: Verify payment and get API response
   const verifyPayment = async (txHash: string) => {
     if (!paymentDetails) return;
     setIsLoading(true);
+    setFormError(null);
 
     try {
       const res = await fetch(paymentDetails.endpoint, {
@@ -178,20 +200,33 @@ const Marketplace: React.FC = () => {
         },
       });
 
+      const contentType = res.headers.get("content-type") || "";
       if (res.ok) {
-        const data = await res.json();
-        setApiResult(JSON.stringify(data, null, 2));
+        if (contentType.includes("application/json")) {
+          const data = await res.json();
+          setApiResult(JSON.stringify(data, null, 2));
+        } else {
+          const text = await res.text();
+          setApiResult(text);
+        }
         setShowResult(true);
         setShowPaymentModal(false);
         setTxHashInput("");
         setPaymentDetails(null);
       } else {
-        const error = await res.json();
-        alert(error.error || "Payment verification failed");
+        let errMsg = "Payment verification failed";
+        if (contentType.includes("application/json")) {
+          const error = await res.json();
+          errMsg = error.error || errMsg;
+        } else {
+          const text = await res.text();
+          errMsg = text || errMsg;
+        }
+        setFormError(errMsg);
       }
     } catch (err) {
       console.error("Verification Error:", err);
-      alert("Failed to verify payment");
+      setFormError("Failed to verify payment: " + (err as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -444,21 +479,34 @@ const Marketplace: React.FC = () => {
         <AnimatePresence>
           {showResult && apiResult && (
             <motion.div
+              ref={resultRef}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="mt-12 bg-gray-900 rounded-2xl p-6 shadow-2xl"
+              className="mt-12 bg-gray-900 rounded-2xl p-6 shadow-2xl scroll-mt-8"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-white">
-                  API Response
-                </h3>
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-3 py-1 text-emerald-300 text-xs font-semibold tracking-widest uppercase mb-3">
+                    Payment Confirmed
+                  </div>
+                  <h3 className="text-2xl font-black text-white leading-tight">
+                    The API worked successfully.
+                  </h3>
+                  <p className="text-sm text-gray-300 mt-2">
+                    Your payment cleared and the response below came directly
+                    from the protected API.
+                  </p>
+                </div>
                 <button
                   onClick={() => setShowResult(false)}
                   className="text-gray-400 hover:text-white"
                 >
                   ✕
                 </button>
+              </div>
+              <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+                Success: payment accepted, API unlocked, and result returned.
               </div>
               <pre className="text-green-400 font-mono text-sm overflow-auto max-h-96">
                 {apiResult}
@@ -555,6 +603,9 @@ const Marketplace: React.FC = () => {
               </div>
 
               {/* Tabs */}
+              {formError && (
+                <div className="mb-4 text-sm text-red-600">{formError}</div>
+              )}
               <div className="flex gap-2 mb-4">
                 <button
                   onClick={() => setActiveTab("pay")}

@@ -51,6 +51,7 @@ const PrepaidMarketplace: React.FC = () => {
   const [showFundModal, setShowFundModal] = useState(false);
   const [apiResult, setApiResult] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [isCallingApi, setIsCallingApi] = useState(false);
   const [escrowWallet, setEscrowWallet] = useState<string>("");
 
@@ -132,9 +133,13 @@ const PrepaidMarketplace: React.FC = () => {
   const fetchEscrowInfo = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/escrow/info`);
-      const data = await response.json();
-      if (data.success) {
-        setEscrowWallet(data.escrowPublicKey);
+      const ct = response.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const data = await response.json();
+        if (data.success) setEscrowWallet(data.escrowPublicKey);
+      } else {
+        const text = await response.text();
+        console.warn("Non-JSON escrow/info response:", text);
       }
     } catch (error) {
       console.error("Failed to fetch escrow info:", error);
@@ -144,12 +149,14 @@ const PrepaidMarketplace: React.FC = () => {
   const fetchBalance = async (userId: string) => {
     setIsLoadingBalance(true);
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/escrow/balance/${userId}`,
-      );
-      const data = await response.json();
-      if (data.success) {
-        setBalance(data.balance);
+      const response = await fetch(`${API_BASE_URL}/escrow/balance/${userId}`);
+      const ct = response.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const data = await response.json();
+        if (data.success) setBalance(data.balance);
+      } else {
+        const text = await response.text();
+        console.warn("Non-JSON escrow/balance response:", text);
       }
     } catch (error) {
       console.error("Failed to fetch balance:", error);
@@ -174,10 +181,17 @@ const PrepaidMarketplace: React.FC = () => {
 
   const handleFundEscrow = async () => {
     if (!userWallet || !escrowWallet) {
-      alert("Please connect your wallet first");
+      setFormError("Please connect your wallet first.");
       return;
     }
 
+    const amount = parseFloat(fundAmount);
+    if (isNaN(amount) || amount <= 0) {
+      setFormError("Enter a valid fund amount greater than 0.");
+      return;
+    }
+
+    setFormError(null);
     setIsFunding(true);
     try {
       // Create Stellar payment transaction
@@ -223,20 +237,24 @@ const PrepaidMarketplace: React.FC = () => {
         }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        setBalance(data.newBalance);
-        setShowFundModal(false);
-        alert(
-          `✅ Successfully funded ${fundAmount} XLM! New balance: ${data.newBalance} XLM`,
-        );
+      const ct = response.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const data = await response.json();
+        if (data.success) {
+          setBalance(data.newBalance);
+          setShowFundModal(false);
+          setFormError(null);
+          alert(`✅ Successfully funded ${fundAmount} XLM! New balance: ${data.newBalance} XLM`);
+        } else {
+          setFormError(data.error || "Failed to record prepayment");
+        }
       } else {
-        alert(`❌ Error: ${data.error}`);
+        const text = await response.text();
+        setFormError(text || "Unexpected response from escrow/fund");
       }
     } catch (error: any) {
       console.error("Funding error:", error);
-      alert(`❌ Failed to fund escrow: ${error.message}`);
+      setFormError(`❌ Failed to fund escrow: ${error.message}`);
     } finally {
       setIsFunding(false);
     }
@@ -268,21 +286,31 @@ const PrepaidMarketplace: React.FC = () => {
         },
       });
 
+      const ct = response.headers.get("content-type") || "";
       if (response.status === 402) {
-        const errorData = await response.json();
-        alert(
-          `❌ ${errorData.error}\nRemaining balance: ${errorData.remainingBalance} XLM`,
-        );
+        if (ct.includes("application/json")) {
+          const errorData = await response.json();
+          setFormError(`${errorData.error}\nRemaining balance: ${errorData.remainingBalance} XLM`);
+        } else {
+          const text = await response.text();
+          setFormError(text || "Insufficient balance");
+        }
         await fetchBalance(userWallet);
       } else if (response.ok) {
-        const data = await response.json();
-        setApiResult(JSON.stringify(data, null, 2));
-        setShowResult(true);
-        setBalance(data.remainingBalance || balance - api.price);
+        if (ct.includes("application/json")) {
+          const data = await response.json();
+          setApiResult(JSON.stringify(data, null, 2));
+          setShowResult(true);
+          setBalance(data.remainingBalance || balance - api.price);
+        } else {
+          const text = await response.text();
+          setApiResult(text);
+          setShowResult(true);
+        }
       }
     } catch (error: any) {
       console.error("API call error:", error);
-      alert(`❌ Error calling API: ${error.message}`);
+      setFormError(`❌ Error calling API: ${error.message}`);
     } finally {
       setIsCallingApi(false);
     }
@@ -585,6 +613,9 @@ const PrepaidMarketplace: React.FC = () => {
                   </h2>
 
                   <div className="mb-6">
+                    {formError && (
+                      <div className="mb-4 text-sm text-red-600">{formError}</div>
+                    )}
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Amount (XLM)
                     </label>
@@ -619,7 +650,7 @@ const PrepaidMarketplace: React.FC = () => {
                     </button>
                     <button
                       onClick={handleFundEscrow}
-                      disabled={isFunding || !fundAmount}
+                      disabled={isFunding || !userWallet || !(parseFloat(fundAmount) > 0)}
                       className="flex-1 bg-gradient-to-r from-gray-900 to-black text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 transition-all"
                     >
                       {isFunding ? "Processing..." : "Fund Now"}

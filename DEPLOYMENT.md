@@ -10,9 +10,11 @@
    - Add IP allowlist: 0.0.0.0/0 (or specific Render IP after first deploy)
 
 2. **Deploy Backend**
+
    ```bash
    git push origin main  # Push to GitHub repo
    ```
+
    - Go to https://render.com/dashboard
    - Click "New" → "Web Service"
    - Connect GitHub repo (select `Falcon-Stellar`)
@@ -62,24 +64,26 @@ If backend can't connect to MongoDB after deploy:
 ## Environment Variables Checklist
 
 **Backend (.env in backend folder)**
+
 ```env
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/falcone?retryWrites=true&w=majority
 ESCROW_PUBLIC_KEY=GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
 ```
 
 **Frontend (Vercel)**
+
 ```env
 VITE_API_BASE_URL=https://your-backend-domain.onrender.com
 ```
 
 ## Troubleshooting
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| MongoDB connection timeout | IP allowlist missing | Add Render IP to Atlas allowlist |
-| 404 on `/api/list` | Backend not started | Check backend deploy logs |
-| Frontend shows "Loading..." | API_BASE_URL wrong | Verify VITE_API_BASE_URL in Vercel |
-| Escrow balance errors | MongoDB collections missing | Run seed on backend startup (automatic) |
+| Error                       | Cause                       | Fix                                     |
+| --------------------------- | --------------------------- | --------------------------------------- |
+| MongoDB connection timeout  | IP allowlist missing        | Add Render IP to Atlas allowlist        |
+| 404 on `/api/list`          | Backend not started         | Check backend deploy logs               |
+| Frontend shows "Loading..." | API_BASE_URL wrong          | Verify VITE_API_BASE_URL in Vercel      |
+| Escrow balance errors       | MongoDB collections missing | Run seed on backend startup (automatic) |
 
 ## Local Development
 
@@ -96,6 +100,7 @@ npm run dev
 ```
 
 Test the health endpoint locally:
+
 ```bash
 curl http://localhost:3001/health
 ```
