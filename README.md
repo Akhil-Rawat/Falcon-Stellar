@@ -1,5 +1,10 @@
 <img width="1910" height="907" alt="Screenshot 2026-02-01 134009" src="https://github.com/user-attachments/assets/bb5ca431-c9b8-4fcf-b1ef-302e42f086ff" />
 
+Falcon Stellar turns the Stellar ecosystem into a real payment layer for APIs, AI tools, and marketplaces.
+It makes every request monetizable, every payment verifiable, and every workflow easier to scale without subscriptions, manual invoicing, or trust-heavy intermediaries.
+
+At a glance, this project helps Stellar by showing a practical, developer-friendly use case for on-chain payments: usage-based access, escrow-funded balances, and fast HTTP-level enforcement that fits naturally into modern apps.
+
 Our Escrow Wallet For Escrow SDK , Where User Fund this wallet and Use Our API
 
 ---
@@ -144,6 +149,18 @@ After deploy, the Marketplace and Prepaid pages read data from the deployed back
 ## Architecture
 
 This project uses a split architecture:
+
+```mermaid
+flowchart LR
+   U[User / AI Agent] --> F[Frontend: React + Vite]
+   F --> B[Backend API: Express + Node.js]
+   B --> M[(MongoDB Atlas)]
+   B --> S[Stellar Testnet]
+   F --> W[Freighter Wallet]
+   W --> S
+   S --> B
+   B --> F
+```
 
 1. Frontend (`React + Vite`)
 2. Backend (`Express + Node.js`)
