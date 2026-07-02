@@ -76,6 +76,23 @@ ESCROW_PUBLIC_KEY=GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
 VITE_API_BASE_URL=https://your-backend-domain.onrender.com
 ```
 
+## CI/CD With GitHub Actions
+
+The repository now includes a GitHub Actions workflow at [/.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml) that:
+
+1. Runs on every pull request and push.
+2. Installs the root and backend dependencies.
+3. Builds the Vite frontend.
+4. Runs a backend syntax check.
+5. Triggers production deploy hooks on pushes to `main`.
+
+To enable the deploy stage, add these GitHub repository secrets:
+
+1. `RENDER_DEPLOY_HOOK_URL` for the backend service.
+2. `VERCEL_DEPLOY_HOOK_URL` for the frontend deployment.
+
+If either secret is missing, the workflow still passes the CI checks and skips that deployment step.
+
 ## Troubleshooting
 
 | Error                       | Cause                       | Fix                                     |
