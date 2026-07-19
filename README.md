@@ -7,6 +7,8 @@ At a glance, this project helps Stellar by showing a practical, developer-friend
 
 Our Escrow Wallet For Escrow SDK , Where User Fund this wallet and Use Our API
 
+[PITCH DECK](https://docs.google.com/presentation/d/1AfyQ2TTgBxGwh1p5bfU1k4WE_LTZ4jKj/edit?usp=sharing&ouid=117078117505478399913&rtpof=true&sd=true)
+
 ---
 
 ## Escrow Public Key: GALFFRMVCGOPUHSXER3ZZKYHR25F4ISJFTLPEGX3UI4B63MPKUC75BLJ
