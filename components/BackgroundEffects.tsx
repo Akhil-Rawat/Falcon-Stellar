@@ -6,19 +6,19 @@ const BackgroundEffects: React.FC = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       {/* Deep Base Gradient */}
-      <div className="absolute inset-0 bg-[#050505]" />
+      <div className="absolute inset-0 bg-[#047CD2]" />
       
       {/* Interactive Magnetic Dot Grid */}
       <InteractiveDotGrid />
 
-      {/* Top Left Purple Glow */}
-      <div className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full bg-purple-900/20 blur-[150px]" />
+      {/* Top Left Green Glow */}
+      <div className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full bg-[#0ea879]/30 blur-[150px]" />
       
       {/* Center Blue Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] rounded-full bg-blue-900/10 blur-[180px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] rounded-full bg-[#0f6fb8]/20 blur-[180px]" />
       
       {/* Bright Central Point */}
-      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-blue-400/5 blur-[100px]" />
+      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[#2dd4bf]/10 blur-[100px]" />
 
       {/* Animated Light Streaks (Stars/Comets) */}
       <svg className="absolute inset-0 w-full h-full opacity-30">

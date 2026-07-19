@@ -249,7 +249,7 @@ const Marketplace: React.FC = () => {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="max-w-7xl w-full rounded-3xl bg-white/60 backdrop-blur-md border border-gray-300 shadow-xl p-10 md:p-16"
+          className="max-w-7xl w-full rounded-3xl bg-white/85 backdrop-blur-md border border-sky-100 shadow-xl p-10 md:p-16"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             {/* Left Content */}
@@ -259,7 +259,7 @@ const Marketplace: React.FC = () => {
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
             >
-              <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-5xl md:text-6xl font-extrabold text-[#047CD2] mb-6 leading-tight">
                 Monetize Your APIs Instantly
               </h2>
               <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed max-w-xl">
@@ -276,7 +276,7 @@ const Marketplace: React.FC = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-block bg-gradient-to-r from-gray-900 to-black text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transition-all"
+                className="inline-block bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transition-all"
               >
                 View SDK Documentation →
               </motion.a>
@@ -370,7 +370,7 @@ const Marketplace: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-6xl font-black text-gray-900 mb-6 leading-tight"
+            className="text-6xl font-black text-[#047CD2] mb-6 leading-tight"
           >
             API Marketplace
           </motion.h1>
@@ -407,14 +407,14 @@ const Marketplace: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-400/20 to-gray-600/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative bg-white/80 backdrop-blur-xl border border-gray-300 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300">
+                <div className="relative bg-white/90 backdrop-blur-xl border border-sky-100 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300">
                   {/* Category Badge */}
-                  <span className="inline-block px-3 py-1 bg-gray-200 text-gray-900 text-xs font-semibold rounded-full mb-4">
+                  <span className="inline-block px-3 py-1 bg-sky-100 text-[#047CD2] text-xs font-semibold rounded-full mb-4">
                     {api.category}
                   </span>
 
                   {/* API Name */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-bold text-[#047CD2] mb-2">
                     {api.name}
                   </h3>
 
@@ -440,7 +440,7 @@ const Marketplace: React.FC = () => {
                     disabled={isLoading}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 bg-black text-white font-semibold rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white font-semibold rounded-full hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
@@ -534,12 +534,12 @@ const Marketplace: React.FC = () => {
               {/* Header */}
               <div className="mb-8">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="h-1 w-12 bg-gray-900"></div>
+                  <div className="h-1 w-12 bg-[#047CD2]"></div>
                   <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">
                     Payment Required
                   </span>
                 </div>
-                <h3 className="text-3xl font-black text-gray-900 mb-2">
+                <h3 className="text-3xl font-black text-[#047CD2] mb-2">
                   Complete Transaction
                 </h3>
                 <p className="text-gray-600">
@@ -611,8 +611,8 @@ const Marketplace: React.FC = () => {
                   onClick={() => setActiveTab("pay")}
                   className={`flex-1 py-2 rounded-full font-medium transition-colors ${
                     activeTab === "pay"
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? "bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white"
+                      : "bg-sky-50 text-[#047CD2] hover:bg-sky-100"
                   }`}
                 >
                   Pay Now
@@ -621,8 +621,8 @@ const Marketplace: React.FC = () => {
                   onClick={() => setActiveTab("hash")}
                   className={`flex-1 py-2 rounded-full font-medium transition-colors ${
                     activeTab === "hash"
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? "bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white"
+                      : "bg-sky-50 text-[#047CD2] hover:bg-sky-100"
                   }`}
                 >
                   I Already Paid
@@ -638,7 +638,7 @@ const Marketplace: React.FC = () => {
                   disabled={isPaying}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-full hover:from-gray-800 hover:to-gray-900 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white font-bold rounded-full hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isPaying ? (
                     <>
@@ -680,7 +680,7 @@ const Marketplace: React.FC = () => {
                   <button
                     onClick={handleSubmitTxHash}
                     disabled={!txHashInput.trim() || isLoading}
-                    className="w-full py-4 bg-black text-white font-bold rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50"
+                    className="w-full py-4 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white font-bold rounded-full hover:opacity-90 transition-colors disabled:opacity-50"
                   >
                     {isLoading ? "Verifying..." : "Verify & Continue"}
                   </button>

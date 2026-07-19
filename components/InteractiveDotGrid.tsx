@@ -61,7 +61,7 @@ const InteractiveDotGrid: React.FC = () => {
       draw(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, dotSize, 0, Math.PI * 2);
-        ctx.fillStyle = '#000000'; // ⚫ black dots
+        ctx.fillStyle = '#ffffff'; // ✨ white dots for contrast
         ctx.fill();
       }
     }
@@ -92,8 +92,8 @@ const InteractiveDotGrid: React.FC = () => {
         mouseRef.current.y,
         mouseRadius
       );
-      glow.addColorStop(0, 'rgba(0,0,0,0.12)');
-      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      glow.addColorStop(0, 'rgba(255,255,255,0.16)');
+      glow.addColorStop(1, 'rgba(255,255,255,0)');
 
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, canvas.width, canvas.height);

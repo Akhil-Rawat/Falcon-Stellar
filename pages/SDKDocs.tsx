@@ -21,7 +21,7 @@ const SDKDocs: React.FC = () => {
               Documentation
             </span>
           </div>
-          <h1 className="text-6xl font-black text-gray-900 mb-6 leading-tight">
+          <h1 className="text-6xl font-black text-[#047CD2] mb-6 leading-tight">
             SDK Documentation
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl leading-relaxed">
@@ -37,7 +37,7 @@ const SDKDocs: React.FC = () => {
           className="bg-white rounded-3xl shadow-2xl p-12 border border-gray-200 space-y-10"
         >
           <section>
-            <h2 className="text-3xl font-black text-gray-900 mb-4">
+            <h2 className="text-3xl font-black text-[#047CD2] mb-4">
               How We Make This Work
             </h2>
             <p className="text-gray-700 leading-relaxed text-lg">
@@ -111,7 +111,7 @@ app.get(
           </section>
 
           <section className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+            <h3 className="text-xl font-bold text-[#047CD2] mb-2">
               Required Environment Variables
             </h3>
             <ul className="list-disc pl-6 text-gray-700 space-y-1">

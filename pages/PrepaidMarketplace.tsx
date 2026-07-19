@@ -329,7 +329,7 @@ const PrepaidMarketplace: React.FC = () => {
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
             viewport={{ once: true }}
-            className="max-w-7xl w-full rounded-3xl bg-white/60 backdrop-blur-md border border-gray-200 shadow-xl p-10 md:p-16"
+            className="max-w-7xl w-full rounded-3xl bg-white/85 backdrop-blur-md border border-sky-100 shadow-xl p-10 md:p-16"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
               {/* Left Content */}
@@ -339,7 +339,7 @@ const PrepaidMarketplace: React.FC = () => {
                 transition={{ duration: 1, ease: "easeOut" }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                <h2 className="text-5xl md:text-6xl font-extrabold text-[#047CD2] mb-6 leading-tight">
                   Build Prepaid APIs
                 </h2>
                 <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed max-w-xl">
@@ -356,7 +356,7 @@ const PrepaidMarketplace: React.FC = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-block bg-gradient-to-r from-gray-900 to-black text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transition-all"
+                  className="inline-block bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-2xl transition-all"
                 >
                   View SDK Documentation →
                 </motion.a>
@@ -459,7 +459,7 @@ const PrepaidMarketplace: React.FC = () => {
                 Escrow-Based APIs
               </span>
             </div>
-            <h1 className="text-6xl font-black text-gray-900 mb-6 leading-tight">
+            <h1 className="text-6xl font-black text-[#047CD2] mb-6 leading-tight">
               Prepaid Marketplace
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl leading-relaxed">
@@ -475,7 +475,7 @@ const PrepaidMarketplace: React.FC = () => {
             transition={{ delay: 0.1 }}
             className="max-w-6xl mx-auto mb-16"
           >
-            <div className="bg-white rounded-3xl shadow-2xl p-10 border border-gray-200">
+            <div className="bg-white/90 rounded-3xl shadow-2xl p-10 border border-sky-100">
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Wallet Connection */}
                 <div>
@@ -492,7 +492,7 @@ const PrepaidMarketplace: React.FC = () => {
                   ) : (
                     <button
                       onClick={handleConnectWallet}
-                      className="w-full bg-gradient-to-r from-gray-900 to-black text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all"
+                      className="w-full bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all"
                     >
                       Connect Freighter Wallet
                     </button>
@@ -504,17 +504,17 @@ const PrepaidMarketplace: React.FC = () => {
                   <h3 className="text-sm font-bold tracking-widest text-gray-500 uppercase mb-4">
                     Available Balance
                   </h3>
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-300">
+                  <div className="bg-gradient-to-r from-sky-50 to-emerald-50 rounded-xl p-6 border border-sky-100">
                     {isLoadingBalance ? (
                       <p className="text-gray-500">Loading...</p>
                     ) : (
                       <>
-                        <p className="text-3xl font-bold text-gray-900">
+                        <p className="text-3xl font-bold text-[#047CD2]">
                           {balance.toFixed(2)} XLM
                         </p>
                         <button
                           onClick={() => setShowFundModal(true)}
-                          className="mt-2 text-sm text-gray-800 hover:text-black font-semibold"
+                          className="mt-2 text-sm text-[#047CD2] hover:text-[#035f9f] font-semibold"
                         >
                           + Add Funds
                         </button>
@@ -558,14 +558,14 @@ const PrepaidMarketplace: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
-                  className="group bg-white rounded-2xl shadow-lg p-8 border border-gray-200 hover:shadow-2xl hover:border-gray-900 transition-all duration-300"
+                  className="group bg-white/90 rounded-2xl shadow-lg p-8 border border-sky-100 hover:shadow-2xl hover:border-[#047CD2]/40 transition-all duration-300"
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <span className="text-xs font-bold tracking-widest bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg uppercase">
+                    <span className="text-xs font-bold tracking-widest bg-sky-50 text-[#047CD2] px-3 py-1.5 rounded-lg uppercase">
                       {api.category}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-black text-gray-900 mb-3 group-hover:text-black transition-colors">
+                  <h3 className="text-2xl font-black text-[#047CD2] mb-3 group-hover:text-[#035f9f] transition-colors">
                     {api.name}
                   </h3>
                   <p className="text-sm text-gray-600 mb-6 leading-relaxed">
@@ -581,7 +581,7 @@ const PrepaidMarketplace: React.FC = () => {
                     <button
                       onClick={() => handleCallApi(api)}
                       disabled={isCallingApi || !userWallet}
-                      className="bg-gradient-to-r from-gray-900 to-black text-white py-2 px-4 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white py-2 px-4 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       {isCallingApi ? "⏳" : "Call API"}
                     </button>
@@ -606,9 +606,9 @@ const PrepaidMarketplace: React.FC = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.9, opacity: 0 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full"
+                  className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full border border-sky-100"
                 >
-                  <h2 className="text-3xl font-black text-gray-900 mb-8">
+                  <h2 className="text-3xl font-black text-[#047CD2] mb-8">
                     Fund Wallet
                   </h2>
 
@@ -623,7 +623,7 @@ const PrepaidMarketplace: React.FC = () => {
                       type="number"
                       value={fundAmount}
                       onChange={(e) => setFundAmount(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-sky-200 rounded-lg focus:ring-2 focus:ring-[#047CD2] focus:border-transparent"
                       placeholder="10"
                       min="0.1"
                       step="0.1"
@@ -633,7 +633,7 @@ const PrepaidMarketplace: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-6">
+                  <div className="bg-sky-50 border border-sky-100 rounded-lg p-4 mb-6">
                     <p className="text-sm text-gray-700">
                       ℹ️ Funds will be sent to the escrow wallet and credited to
                       your account. You can then use them to call any prepaid
@@ -644,14 +644,14 @@ const PrepaidMarketplace: React.FC = () => {
                   <div className="flex gap-3">
                     <button
                       onClick={() => setShowFundModal(false)}
-                      className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition-all"
+                      className="flex-1 bg-sky-50 text-[#047CD2] py-3 px-6 rounded-lg font-semibold hover:bg-sky-100 transition-all"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleFundEscrow}
                       disabled={isFunding || !userWallet || !(parseFloat(fundAmount) > 0)}
-                      className="flex-1 bg-gradient-to-r from-gray-900 to-black text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 transition-all"
+                      className="flex-1 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg disabled:opacity-50 transition-all"
                     >
                       {isFunding ? "Processing..." : "Fund Now"}
                     </button>
@@ -678,7 +678,7 @@ const PrepaidMarketplace: React.FC = () => {
                   onClick={(e) => e.stopPropagation()}
                   className="bg-white rounded-3xl shadow-2xl p-10 max-w-2xl w-full max-h-[80vh] overflow-auto"
                 >
-                  <h2 className="text-3xl font-black text-gray-900 mb-6">
+                  <h2 className="text-3xl font-black text-[#047CD2] mb-6">
                     API Response
                   </h2>
                   <pre className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-auto text-sm">
@@ -686,7 +686,7 @@ const PrepaidMarketplace: React.FC = () => {
                   </pre>
                   <button
                     onClick={() => setShowResult(false)}
-                    className="mt-6 w-full bg-gradient-to-r from-gray-900 to-black text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all"
+                    className="mt-6 w-full bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all"
                   >
                     Close
                   </button>

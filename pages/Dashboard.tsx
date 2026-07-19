@@ -6,7 +6,7 @@ const Dashboard: React.FC = () => {
       <Navbar />
 
       <section className="min-h-screen px-6 py-24 max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-10">Dashboard</h1>
+        <h1 className="text-4xl font-bold text-[#047CD2] mb-10">Dashboard</h1>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">

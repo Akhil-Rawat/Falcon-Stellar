@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, useScroll } from "framer-motion";
 import { requestAccess, getAddress } from "@stellar/freighter-api";
+import OLogo from "../assets/O.png";
 
 const Navbar: React.FC = () => {
   const [address, setAddress] = useState<string | null>(null);
@@ -53,13 +54,19 @@ const Navbar: React.FC = () => {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={`
-            text-2xl font-bold tracking-widest uppercase cursor-pointer
-            transition-colors duration-300
-            ${scrolled ? "text-gray-900" : "text-black"}
-          `}
+          className="flex items-center gap-2 cursor-pointer transition-colors duration-300"
         >
-          FALC<span className="text-gray-600">Ø</span>N
+          <span
+            className={`text-2xl font-bold tracking-widest uppercase ${scrolled ? "text-[#047CD2]" : "text-white"}`}
+          >
+            FALC
+            <img
+              src={OLogo}
+              alt=""
+              className="inline-block h-8 w-8 mx-1 object-contain align-middle"
+            />
+            N
+          </span>
         </motion.div>
       </Link>
 
@@ -89,7 +96,7 @@ const Navbar: React.FC = () => {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#047CD2]"
                     initial={false}
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
@@ -113,11 +120,11 @@ const Navbar: React.FC = () => {
           ${
             address
               ? scrolled
-                ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white border-2 border-transparent shadow-lg"
-                : "bg-gradient-to-r from-gray-800 to-gray-900 text-white border-2 border-transparent shadow-lg"
+                ? "bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white border-2 border-transparent shadow-lg"
+                : "bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white border-2 border-transparent shadow-lg"
               : scrolled
-                ? "bg-gradient-to-r from-gray-900 to-black text-white border-2 border-transparent shadow-lg"
-                : "bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white"
+                ? "bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white border-2 border-transparent shadow-lg"
+                : "bg-white text-[#047CD2] border-2 border-white hover:bg-sky-50"
           }
         `}
       >
@@ -152,7 +159,7 @@ const Navbar: React.FC = () => {
         className={`
           md:hidden p-2 rounded-lg
           transition-colors duration-300
-          ${scrolled ? "text-gray-900 hover:bg-gray-100" : "text-black hover:bg-white/50"}
+          ${scrolled ? "text-[#047CD2] hover:bg-sky-50" : "text-white hover:bg-white/15"}
         `}
       >
         <svg

@@ -32,9 +32,9 @@ const NextSection: React.FC = () => {
         className="
           max-w-7xl w-full
           rounded-3xl
-          bg-white/6
+          bg-white/85
           backdrop-blur-md
-          border border-gray-200
+          border border-sky-100
           shadow-xl
           p-10 md:p-16
         "
@@ -48,11 +48,11 @@ const NextSection: React.FC = () => {
             transition={{ duration: 1, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-5xl md:text-6xl font-extrabold text-[#047CD2] mb-6 leading-tight">
               Build with real control.
             </h2>
 
-            <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-xl">
+            <p className="text-lg md:text-xl text-slate-700 mb-10 leading-relaxed max-w-xl">
               Launch application-specific blockchains with modular architecture,
               native interoperability, and production-ready tooling.
             </p>

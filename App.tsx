@@ -28,7 +28,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full bg-white overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,_#0ea879_0%,_#047CD2_45%,_#035f9f_100%)] text-white">
       {/* 🔹 GLOBAL BACKGROUND */}
       <BackgroundEffects />
 
@@ -50,7 +50,7 @@ const App: React.FC = () => {
       </div>
 
       {/* 🔹 BOTTOM FADE */}
-      <div className="fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white to-transparent pointer-events-none z-0" />
+      <div className="fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#035f9f] to-transparent pointer-events-none z-0" />
     </div>
   );
 };

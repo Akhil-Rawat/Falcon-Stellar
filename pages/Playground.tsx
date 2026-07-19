@@ -121,7 +121,7 @@ const Playground: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <section className="min-h-screen px-6 py-24 max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-black mb-6">
+        <h1 className="text-4xl font-bold text-[#047CD2] mb-6">
           Falcone SDK Playground
         </h1>
 
@@ -143,7 +143,7 @@ const Playground: React.FC = () => {
         <button
           onClick={runApi}
           disabled={isLoading}
-          className="mt-6 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 disabled:opacity-50"
+          className="mt-6 px-6 py-3 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white rounded-full hover:opacity-90 disabled:opacity-50"
         >
           {isLoading ? "Processing..." : "Run Falcone API"}
         </button>
@@ -152,7 +152,7 @@ const Playground: React.FC = () => {
         {showPayment && paymentDetails && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-6 w-80 text-center">
-              <h3 className="text-lg font-semibold text-black mb-4">
+              <h3 className="text-lg font-semibold text-[#047CD2] mb-4">
                 This request costs {paymentDetails.amount}{" "}
                 {paymentDetails.asset}
               </h3>
@@ -160,13 +160,13 @@ const Playground: React.FC = () => {
               <div className="flex gap-4 justify-center">
                 <button
                   onClick={handlePayment}
-                  className="px-4 py-2 bg-black text-white rounded-full"
+                  className="px-4 py-2 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white rounded-full"
                 >
                   Pay & Continue
                 </button>
                 <button
                   onClick={() => setShowPayment(false)}
-                  className="px-4 py-2 border border-gray-300 text-black rounded-full"
+                  className="px-4 py-2 border border-sky-200 text-[#047CD2] rounded-full"
                 >
                   Cancel
                 </button>
@@ -177,7 +177,7 @@ const Playground: React.FC = () => {
 
         {/* API Result */}
         {showResult && (
-          <div className="mt-10 bg-gray-100 rounded-lg p-4 font-mono text-sm text-black overflow-auto">
+          <div className="mt-10 bg-slate-900 rounded-lg p-4 font-mono text-sm text-sky-100 overflow-auto">
             <pre>{apiResult}</pre>
           </div>
         )}

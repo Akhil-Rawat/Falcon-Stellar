@@ -28,7 +28,7 @@ const Home: React.FC = () => {
 
       {/* API Marketplace */}
       <section className="py-24 px-6">
-        <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="text-4xl font-bold text-center text-[#047CD2] mb-12">
           API Marketplace
         </h2>
 
@@ -36,17 +36,17 @@ const Home: React.FC = () => {
           {apis.map((api) => (
             <div
               key={api.id}
-              className="rounded-2xl bg-white/70 backdrop-blur border border-gray-200 p-6 shadow-sm"
+              className="rounded-2xl bg-white/90 backdrop-blur border border-sky-100 p-6 shadow-sm"
             >
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <h3 className="text-2xl font-semibold text-[#047CD2]">
                 {api.name}
               </h3>
               <p className="text-gray-600 mt-2">{api.description}</p>
-              <p className="mt-4 font-medium text-gray-800">{api.price}</p>
+              <p className="mt-4 font-medium text-slate-700">{api.price}</p>
 
               <button
                 onClick={() => navigate("/playground")}
-                className="mt-6 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition"
+                className="mt-6 px-6 py-3 bg-gradient-to-r from-[#047CD2] to-[#0ea879] text-white rounded-full hover:opacity-90 transition"
               >
                 Try API
               </button>
